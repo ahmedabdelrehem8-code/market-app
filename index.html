@@ -115,7 +115,6 @@
         }
 
         /* --- 🔥 سحر الـ PDF: كلاس خاص للطباعة فقط --- */
-        /* التعديل الهام هنا: إزالة position absolute لمنع الصفحة البيضاء */
         .pdf-mode {
             width: 100% !important;        
             max-width: none !important;
@@ -124,7 +123,6 @@
             background: white !important;
             border: none !important;
             box-shadow: none !important;
-            /* 🚫 تم حذف position: absolute لأنه سبب المشكلة */
         }
 
         /* إجبار الجدول في وضع الطباعة على الالتفاف وعدم السكرول */
@@ -258,10 +256,10 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ activity: activity })
             });
-            // 👇 معالجة حالة الرفض (400 Bad Request)
+            
             if (response.status === 400) {
                 const data = await response.json();
-                alert("❌ " + data.error); // رسالة الرفض للمستخدم
+                alert("❌ " + data.error); 
                 document.getElementById('loading').style.display = 'none';
                 document.querySelector('.search-area').style.display = 'block';
                 document.getElementById('archive-section').style.display = 'block';
@@ -299,11 +297,17 @@
         loadArchive();
     }
 
-    // 🔥 دالة الـ PDF المحسنة (الحل النهائي للصفحة البيضاء)
-    function savePDF() {
+    // 🔥 دالة الـ PDF المعدلة والمحسنة (async + display block + wait)
+    async function savePDF() {
         const element = document.getElementById('print-area');
         
-        // 1. إضافة كلاس التنسيق
+        // 1. ضمان ظهور العنصر لتراه المكتبة
+        document.getElementById("result-container").style.display = "block";
+        
+        // 2. الانتظار قليلاً للتأكد من اكتمال الرسم
+        await new Promise(r => setTimeout(r, 200));
+
+        // 3. إضافة كلاس التنسيق
         element.classList.add('pdf-mode');
 
         const opt = {
@@ -315,18 +319,19 @@
                 useCORS: true,  
                 scrollY: 0,
                 scrollX: 0,
-                windowWidth: 1200 // ✅ خداع المتصفح ليرى الصفحة عريضة
+                windowWidth: 1200 
             },
             jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
         
-        // 2. التحويل ثم إزالة الكلاس
-        html2pdf().set(opt).from(element).save().then(() => {
+        // 4. التحويل ثم إزالة الكلاس
+        try {
+            await html2pdf().set(opt).from(element).save();
+        } catch (err) {
+            console.error("PDF generation failed:", err);
+        } finally {
             element.classList.remove('pdf-mode');
-        }, (err) => {
-            console.error(err);
-            element.classList.remove('pdf-mode');
-        });
+        }
     }
 </script>
 
