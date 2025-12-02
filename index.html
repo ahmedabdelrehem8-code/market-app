@@ -2,224 +2,449 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#1a237e">
 
     <title>نظام الدراسات الائتمانية</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    
+
+    <!-- مكتبة تحويل الـ HTML إلى PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+            integrity="sha512-YcsIPqQd6iZ7OJbRRqtD9hpkfFjPWGCf4pV2IprjT8DFNypKZ0K+fUuJ5lvtTDHkJ/xZBwbNG0Ax7bE/2kWnKw=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- خط عربى مناسب للـ PDF -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap"
+          rel="stylesheet">
+
     <style>
         /* --- الأساسيات --- */
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; margin: 0; padding: 10px; }
-        
-        .container { 
-            max-width: 900px; 
-            width: 98%; 
-            margin: 0 auto; 
-            background: white; 
-            padding: 20px; 
-            border-radius: 12px; 
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 10px;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
             position: relative;
-            box-sizing: border-box; 
+        }
+
+        @media (min-width: 1200px) {
+            body {
+                padding-top: 20px;
+            }
+            .container {
+                max-width: 1200px;
+            }
         }
 
         /* --- تحسينات الموبايل العامة --- */
         @media (max-width: 600px) {
             body { padding: 5px; }
-            .container { 
-                width: 100%; 
-                padding: 10px; 
+            .container {
+                width: 100%;
+                padding: 10px;
                 margin: 0;
                 border-radius: 8px;
-                box-shadow: none; 
+                box-shadow: none;
             }
             h1 { font-size: 20px; }
             .subtitle { font-size: 12px; }
-            
-            .input-group { flex-direction: column; padding: 15px; gap: 10px; }
-            button { width: 100%; font-size: 16px; padding: 12px; }
 
-            .report-header { flex-direction: column; text-align: center; gap: 15px; }
-            .header-left { border-right: none; border-bottom: 2px solid #c0392b; padding-bottom: 10px; padding-right: 0; width: 100%; }
+            .input-group {
+                flex-direction: column;
+                padding: 15px;
+                gap: 10px;
+            }
+            button {
+                width: 100%;
+                font-size: 16px;
+                padding: 12px;
+            }
+
+            .report-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            .header-left {
+                border-right: none;
+                border-bottom: 2px solid #c0392b;
+                padding-bottom: 10px;
+                padding-right: 0;
+                width: 100%;
+            }
             .header-right { width: 100%; }
 
-            .studies-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px; }
+            .studies-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 10px;
+            }
         }
 
         /* --- الهيدر والعناوين --- */
         .user-badge {
-            text-align: center; background-color: #e8eaf6; color: #1a237e; 
-            padding: 8px 20px; border-radius: 50px; font-size: 13px; 
-            font-weight: bold; width: fit-content; margin: 0 auto 20px auto; 
+            text-align: center;
+            background-color: #e8eaf6;
+            color: #1a237e;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            width: fit-content;
+            margin: 0 auto 20px auto;
             border: 1px solid #c5cae9;
         }
 
-        h1 { color: #1a237e; text-align: center; margin: 10px 0; }
-        .subtitle { text-align: center; color: #666; margin-bottom: 30px; }
-        
+        h1 {
+            color: #1a237e;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
         /* --- حقول الإدخال --- */
-        .input-group { display: flex; gap: 10px; margin-bottom: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px; border: 1px solid #eee; }
-        input { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 16px; outline: none; }
-        input:focus { border-color: #1a237e; }
-        button { padding: 12px 30px; background-color: #1a237e; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        button:hover { background-color: #0d47a1; }
+        .search-area { margin-bottom: 10px; }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+
+        input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            outline: none;
+        }
+        input:focus {
+            border-color: #1a237e;
+        }
+
+        button {
+            padding: 12px 30px;
+            background-color: #1a237e;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #0d47a1;
+        }
 
         /* --- الأرشيف --- */
-        .archive-title { font-size: 18px; color: #444; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px; display: flex; justify-content: space-between; }
-        .studies-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
-        
-        .study-card { 
-            background: white; border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; 
-            cursor: pointer; transition: 0.2s; text-align: center; font-weight: bold; color: #555;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.03); font-size: 14px;
+        .archive-title {
+            font-size: 18px;
+            color: #444;
+            margin: 15px 0;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .study-card:hover { background-color: #e3f2fd; border-color: #2196f3; transform: translateY(-3px); color: #1a237e; }
-        .study-card::before { content: "📄"; display: block; font-size: 24px; margin-bottom: 5px; }
+
+        .studies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .study-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: center;
+            font-weight: 600;
+            color: #555;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            font-size: 14px;
+        }
+
+        .study-card:hover {
+            background-color: #e3f2fd;
+            border-color: #2196f3;
+            transform: translateY(-3px);
+            color: #1a237e;
+        }
+
+        .study-card::before {
+            content: "📄";
+            display: block;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
 
         /* --- منطقة النتيجة --- */
-        #result-container { display: none; margin-top: 20px; }
-        .controls { display: flex; gap: 10px; justify-content: flex-end; margin-bottom: 15px; flex-wrap: wrap; }
-        .btn-action { padding: 8px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 14px; color: white; }
+        #result-container {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            color: white;
+        }
 
         /* منطقة الطباعة */
-        #print-area { background: white; padding: 25px; border: 1px solid #ccc; border-radius: 5px; direction: rtl; } 
-        
-        .report-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #1a237e; padding-bottom: 20px; margin-bottom: 30px; }
-        .header-right h2 { margin: 0; color: #1a237e; }
-        .header-left { text-align: left; border-right: 4px solid #c0392b; padding-right: 15px; }
-        .header-left span { display: block; }
-
-        #result h3 { color: #1a237e; background: #f1f2f6; padding: 10px; border-radius: 5px; margin-top: 25px; border-right: 5px solid #1a237e; font-size: 16px; }
-        #result ul { line-height: 1.8; color: #333; padding-right: 20px; }
-        
-        /* --- تنسيق الجدول (العادي للموبايل) --- */
-        #result table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            margin: 20px 0; 
-            font-size: 14px; 
+        #print-area {
+            background: white;
+            padding: 25px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            direction: rtl;
         }
-        
-        #result th, #result td { 
-            border: 1px solid #ddd; 
-            padding: 8px; 
-            text-align: center; 
-        }
-        #result th { background-color: #2c3e50; color: white; }
 
-        /* جعل الجدول قابل للسكرول في الموبايل فقط عشان الصفحة متبوظش */
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #1a237e;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            gap: 15px;
+        }
+
+        .header-right h2 {
+            margin: 0;
+            color: #1a237e;
+        }
+
+        .header-left {
+            text-align: left;
+            border-right: 4px solid #c0392b;
+            padding-right: 15px;
+        }
+
+        .header-left span {
+            display: block;
+        }
+
+        #result h3 {
+            color: #1a237e;
+            background: #f1f2f6;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 25px;
+            border-right: 5px solid #1a237e;
+            font-size: 16px;
+        }
+
+        #result ul {
+            line-height: 1.8;
+            color: #333;
+            padding-right: 20px;
+        }
+
+        /* --- تنسيق الجداول --- */
+        #result table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+
+        #result th,
+        #result td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        #result th {
+            background-color: #2c3e50;
+            color: white;
+        }
+
+        /* جدول في الموبايل: Scroll أفقي فقط */
         @media (max-width: 600px) {
-             #result table { display: block; overflow-x: auto; white-space: nowrap; }
-             #result td, #result th { padding: 5px; font-size: 13px; }
+            #result table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            #result td, #result th {
+                padding: 5px;
+                font-size: 13px;
+            }
         }
 
-        /* --- 🔥 سحر الـ PDF: كلاس خاص للطباعة فقط --- */
+        /* --- وضع الـ PDF --- */
         .pdf-mode {
-            width: 100% !important;        
-            max-width: none !important;
+            width: 100% !important;
+            max-width: 100% !important;
             margin: 0 !important;
-            padding: 20px !important;      
+            padding: 20px !important;
             background: white !important;
             border: none !important;
             box-shadow: none !important;
         }
 
-        /* إجبار الجدول في وضع الطباعة على الالتفاف وعدم السكرول */
         .pdf-mode #result table {
             display: table !important;
             width: 100% !important;
             overflow: visible !important;
-            white-space: normal !important; /* السماح للكلام ينزل سطر جديد */
-            table-layout: fixed !important; /* توزيع الأعمدة */
+            white-space: normal !important;
+            table-layout: fixed !important;
         }
 
-        .pdf-mode #result td, .pdf-mode #result th {
-            word-wrap: break-word !important; 
+        .pdf-mode #result td,
+        .pdf-mode #result th {
+            word-wrap: break-word !important;
             overflow-wrap: break-word !important;
-            font-size: 12px !important;    
+            font-size: 12px !important;
         }
-        
-        /* إخفاء حدود البوكس في الطباعة */
+
         .pdf-mode #print-area {
             border: none !important;
         }
 
-        .loading { text-align: center; color: #e67e22; display: none; margin-top: 20px; font-weight: bold; font-size: 16px; }
-        .badge { display: inline-block; padding: 5px 15px; border-radius: 20px; font-size: 12px; margin-bottom: 15px; background-color:#e3f2fd; color:#1565c0; font-weight: bold; }
+        .loading {
+            text-align: center;
+            color: #e67e22;
+            display: none;
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-bottom: 15px;
+            background-color:#e3f2fd;
+            color:#1565c0;
+            font-weight: bold;
+        }
     </style>
 </head>
+
 <body onload="loadArchive()">
 
-    <div class="container">
-        
-        <div class="user-badge">
-            👤 إعداد: أحمد محمود عبد الرحيم - فرع نويبع
+<div class="container">
+
+    <div class="user-badge">
+        👤 إعداد: أحمد محمود عبد الرحيم - فرع نويبع
+    </div>
+
+    <h1>🏛️ مكتبة دراسات السوق</h1>
+    <div class="subtitle">نظام ذكي لإعداد دراسات السوق والجدوى الائتمانية</div>
+
+    <!-- منطقة البحث -->
+    <div class="search-area">
+        <div class="input-group">
+            <input type="text" id="activityInput"
+                   placeholder="اكتب النشاط (مثال: تجارة الملابس الجاهزة، صناعة البلاستيك، مزرعة مواشي)...">
+            <button onclick="getStudy()">بحث / إنشاء دراسة</button>
+        </div>
+        <div id="loading" class="loading">جارٍ إعداد الدراسة... ⏳</div>
+    </div>
+
+    <!-- منطقة عرض التقرير -->
+    <div id="result-container">
+        <div class="controls">
+            <button onclick="savePDF()" class="btn-action" style="background:#c0392b;">🖨️ تحميل PDF</button>
+            <button onclick="closeReport()" class="btn-action" style="background:#7f8c8d;">❌ إغلاق</button>
         </div>
 
-        <h1>🏛️ مكتبة دراسات السوق</h1>
-        <div class="subtitle">نظام ذكي لإعداد دراسات السوق</div>
-        
-        <div class="search-area">
-            <div class="input-group">
-                <input type="text" id="activityInput" placeholder="بحث عن نشاط جديد (مثال: محل ملابس)...">
-                <button onclick="getStudy()">بحث وإنشاء</button>
-            </div>
-            <div id="loading" class="loading">جارٍ إعداد الدراسة... ⏳</div>
-        </div>
-
-        <div id="result-container">
-            <div class="controls">
-                <button onclick="savePDF()" class="btn-action" style="background:#c0392b;">🖨️ تحميل PDF</button>
-                <button onclick="closeReport()" class="btn-action" style="background:#7f8c8d;">❌ إغلاق</button>
-            </div>
-            
-            <div id="print-area">
-                <div class="report-header">
-                    <div class="header-right">
-                        <h2>تقرير دراسة سوق</h2>
-                        <span id="reportDate" style="color:#666; font-size:14px;">التاريخ: --/--/----</span>
-                    </div>
-                    <div class="header-left">
-                        <span style="font-size:12px; color:#777;">إعداد وتجهيز:</span>
-                        <span style="font-weight:bold; color:#333;">أحمد محمود عبد الرحيم</span>
-                        <span style="font-size:13px; color:#1a237e;">فرع نويبع</span>
-                    </div>
+        <div id="print-area">
+            <div class="report-header">
+                <div class="header-right">
+                    <h2>تقرير دراسة سوق</h2>
+                    <span id="reportDate" style="color:#666; font-size:14px;">التاريخ: --/--/----</span>
                 </div>
-
-                <div id="sourceBadge" class="badge"></div>
-                <div id="result"></div>
-
-                <div style="margin-top: 50px; border-top: 1px solid #eee; padding-top: 15px; text-align: center; color: #aaa; font-size: 11px;">
-                    تم إنشاء هذا المستند آلياً بواسطة نظام الذكاء الاصطناعي
+                <div class="header-left">
+                    <span style="font-size:12px; color:#777;">إعداد وتجهيز:</span>
+                    <span style="font-weight:bold; color:#333;">أحمد محمود عبد الرحيم</span>
+                    <span style="font-size:13px; color:#1a237e;">فرع نويبع</span>
                 </div>
             </div>
-        </div>
 
-        <div id="archive-section">
-            <div class="archive-title">
-                <span>📂 الدراسات المتاحة</span>
-                <span style="font-size:12px; background:#eee; padding:2px 8px; border-radius:10px;" id="count-badge">0</span>
+            <div id="sourceBadge" class="badge"></div>
+            <div id="result"></div>
+
+            <div style="margin-top: 50px; border-top: 1px solid #eee; padding-top: 15px; text-align: center; color: #aaa; font-size: 11px;">
+                تم إنشاء هذا المستند آلياً بواسطة نظام الذكاء الاصطناعي
             </div>
-            <div id="archiveList" class="studies-grid"></div>
         </div>
     </div>
 
-<script>
-    let currentActivityName = "Market_Study"; 
+    <!-- الأرشيف -->
+    <div id="archive-section">
+        <div class="archive-title">
+            <span>📂 الدراسات المتاحة</span>
+            <span style="font-size:12px; background:#eee; padding:2px 8px; border-radius:10px;" id="count-badge">0</span>
+        </div>
+        <div id="archiveList" class="studies-grid"></div>
+    </div>
 
-    // جلب الدراسات السابقة
+</div>
+
+<script>
+    let currentActivityName = "Market_Study";
+
+    // جلب الدراسات السابقة من السيرفر
     async function loadArchive() {
         try {
             const response = await fetch('all-studies');
             const data = await response.json();
             const listDiv = document.getElementById('archiveList');
-            listDiv.innerHTML = ''; 
-            
+            listDiv.innerHTML = '';
+
             document.getElementById('count-badge').innerText = `${data.studies.length}`;
 
-            if (data.studies.length === 0) listDiv.innerHTML = '<p style="color:#777; grid-column:1/-1; text-align:center;">الأرشيف فارغ حالياً.</p>';
-            
+            if (data.studies.length === 0) {
+                listDiv.innerHTML =
+                    '<p style="color:#777; grid-column:1/-1; text-align:center;">الأرشيف فارغ حالياً.</p>';
+            }
+
             data.studies.forEach(study => {
                 const card = document.createElement('div');
                 card.className = 'study-card';
@@ -227,7 +452,9 @@
                 card.onclick = () => openStoredStudy(study.activity_name, study.content);
                 listDiv.appendChild(card);
             });
-        } catch (error) { console.error("Error loading archive"); }
+        } catch (error) {
+            console.error("Error loading archive", error);
+        }
     }
 
     // فتح دراسة مخزنة
@@ -241,11 +468,14 @@
         updateDate();
     }
 
-    // طلب دراسة جديدة
+    // طلب دراسة جديدة من السيرفر
     async function getStudy() {
-        const activity = document.getElementById('activityInput').value;
-        if (!activity) { alert("اكتب النشاط"); return; }
-        
+        const activity = document.getElementById('activityInput').value.trim();
+        if (!activity) {
+            alert("برجاء كتابة اسم النشاط أولاً.");
+            return;
+        }
+
         document.getElementById('loading').style.display = 'block';
         document.getElementById('result-container').style.display = 'none';
         document.getElementById('archive-section').style.display = 'none';
@@ -256,38 +486,41 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ activity: activity })
             });
-            
+
             if (response.status === 400) {
                 const data = await response.json();
-                alert("❌ " + data.error); 
+                alert("❌ " + data.error);
                 document.getElementById('loading').style.display = 'none';
                 document.querySelector('.search-area').style.display = 'block';
                 document.getElementById('archive-section').style.display = 'block';
                 return;
             }
+
             const data = await response.json();
-            
+
             document.getElementById('loading').style.display = 'none';
             document.querySelector('.search-area').style.display = 'none';
             document.getElementById('result-container').style.display = 'block';
-            
+
             if (data.result) {
                 document.getElementById('result').innerHTML = data.result;
-                currentActivityName = data.official_name;
-                document.getElementById('sourceBadge').innerText = `✨ دراسة جديدة: ${data.official_name}`;
+                currentActivityName = data.official_name || activity;
+                document.getElementById('sourceBadge').innerText = `✨ دراسة جديدة: ${currentActivityName}`;
                 updateDate();
             }
         } catch (error) {
+            console.error(error);
             document.getElementById('loading').style.display = 'none';
             document.querySelector('.search-area').style.display = 'block';
             document.getElementById('archive-section').style.display = 'block';
-            alert("حدث خطأ أو السيرفر غير متصل!");
+            alert("حدث خطأ أثناء الاتصال بالسيرفر. برجاء المحاولة مرة أخرى.");
         }
     }
 
     function updateDate() {
         const today = new Date();
-        document.getElementById('reportDate').innerText = "التاريخ: " + today.toLocaleDateString('ar-EG');
+        document.getElementById('reportDate').innerText =
+            "التاريخ: " + today.toLocaleDateString('ar-EG');
     }
 
     function closeReport() {
@@ -297,39 +530,41 @@
         loadArchive();
     }
 
-    // 🔥 دالة الـ PDF المعدلة والمحسنة (async + display block + wait)
+    // دالة تحميل PDF (محسنة)
     async function savePDF() {
         const element = document.getElementById('print-area');
-        
-        // 1. ضمان ظهور العنصر لتراه المكتبة
+
+        // التأكد أن الكونتينر ظاهر
         document.getElementById("result-container").style.display = "block";
-        
-        // 2. الانتظار قليلاً للتأكد من اكتمال الرسم
+
+        // الانتظار قليلاً لضمان اكتمال الرسم
         await new Promise(r => setTimeout(r, 200));
 
-        // 3. إضافة كلاس التنسيق
+        // تفعيل وضع الـ PDF
         element.classList.add('pdf-mode');
 
         const opt = {
-            margin:       [10, 10, 10, 10], 
+            margin:       [10, 10, 10, 10],
             filename:     `دراسة_${currentActivityName}.pdf`,
             image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { 
-                scale: 2,       
-                useCORS: true,  
+            html2canvas:  {
+                scale: 2,
+                useCORS: true,
                 scrollY: 0,
                 scrollX: 0,
-                windowWidth: 1200 
+                windowWidth: document.documentElement.clientWidth
             },
-            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+            pagebreak:    { mode: ['css', 'legacy'] }
         };
-        
-        // 4. التحويل ثم إزالة الكلاس
+
         try {
             await html2pdf().set(opt).from(element).save();
         } catch (err) {
             console.error("PDF generation failed:", err);
+            alert("حدث خطأ أثناء توليد ملف الـ PDF.");
         } finally {
+            // رجوع للوضع العادي
             element.classList.remove('pdf-mode');
         }
     }
