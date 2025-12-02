@@ -89,9 +89,33 @@
         /* تنسيق المحتوى */
         #result h3 { color: #1a237e; background: #f1f2f6; padding: 10px; border-radius: 5px; margin-top: 25px; border-right: 5px solid #1a237e; font-size: 16px; }
         #result ul { line-height: 1.8; color: #333; padding-right: 20px; }
-        #result table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
-        #result th, #result td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        
+        /* ---------------------------------------------------- */
+        /* 🔥 1. تعديل الجدول عشان يظهر كامل في الـ PDF (زي ما طلبت) */
+        /* ---------------------------------------------------- */
+        #result table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin: 20px 0; 
+            font-size: 14px; 
+            table-layout: fixed; /* بيجبر الجدول يلتزم بالعرض */
+        }
+        
+        #result th, #result td { 
+            border: 1px solid #ddd; 
+            padding: 8px; 
+            text-align: center; 
+            word-wrap: break-word; /* بيكسر الكلام الطويل عشان مينطش بره */
+            overflow-wrap: break-word;
+        }
+        
         #result th { background-color: #2c3e50; color: white; }
+
+        /* في الموبايل بس خليه سكرول عشان الرؤية، لكن الـ PDF هيعالجه بالكود اللي تحت */
+        @media (max-width: 600px) {
+             #result table { display: block; overflow-x: auto; }
+        }
+        /* ---------------------------------------------------- */
 
         .loading { text-align: center; color: #e67e22; display: none; margin-top: 20px; font-weight: bold; font-size: 16px; }
         .badge { display: inline-block; padding: 5px 15px; border-radius: 20px; font-size: 12px; margin-bottom: 15px; background-color:#e3f2fd; color:#1565c0; font-weight: bold; }
@@ -233,17 +257,30 @@
         loadArchive();
     }
 
+    // ----------------------------------------------------
+    // 🔥 2. تعديل كود الجافا سكريبت (الخدعة السحرية للطباعة)
+    // ----------------------------------------------------
     function savePDF() {
         const element = document.getElementById('print-area');
+        
+        // إعدادات الطباعة
         const opt = {
-            margin:       [10, 10, 10, 10],
+            margin:       [10, 10, 10, 10], // هوامش الصفحة
             filename:     `دراسة_${currentActivityName}.pdf`,
             image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2 },
+            html2canvas:  { 
+                scale: 2,       // جودة عالية
+                useCORS: true,  // لتحسين تحميل الصور
+                windowWidth: 1200 // 🔥 ده السطر السحري: بيجبره يشوف الصفحة عريضة
+            },
             jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
+        
+        // تنفيذ التحميل
         html2pdf().set(opt).from(element).save();
     }
+    // ----------------------------------------------------
+
 </script>
 
 </body>
