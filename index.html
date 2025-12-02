@@ -143,7 +143,7 @@
 
     async function loadArchive() {
         try {
-            const response = await fetch('http://localhost:3000/all-studies');
+            const response = await fetch('all-studies');
             const data = await response.json();
             const listDiv = document.getElementById('archiveList');
             listDiv.innerHTML = ''; 
@@ -181,7 +181,7 @@
         document.getElementById('archive-section').style.display = 'none';
 
         try {
-            const response = await fetch('http://localhost:3000/generate-study', {
+            const response = await fetch('generate-study', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ activity: activity })
