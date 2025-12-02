@@ -5,11 +5,12 @@ const cors = require('cors');
 const sqlite3 = require('sqlite3').verbose();
 const OpenAI = require('openai'); // بتاع الفلوس القديمة
 const { GoogleGenerativeAI } = require("@google/generative-ai"); // بتاع التوفير
+const path = require('path'); // 👈 1. هام جداً: استدعاء مكتبة المسارات
 
 const app = express();
 app.use(express.json());
 app.use(cors());
-
+app.use(express.static(path.join(__dirname, '.')));
 // 1. إعداد الأرشيف
 const db = new sqlite3.Database('./market_archive.db', (err) => {
   if (err) console.error(err.message);
@@ -26,10 +27,10 @@ db.run(`CREATE TABLE IF NOT EXISTS studies (
 // 2. إعداد المفاتيح (الاثنين مع بعض)
 // مفتاح OpenAI (اللي فيه رصيد)
 const openai = new OpenAI({
-  apiKey: "process.env.OPENAI_API_KEY" // 🔴 استبدل دي بالمفتاح بتاعك لما تجيبه
+  apiKey: process.env.OPENAI_API_KEY // 🔴 استبدل دي بالمفتاح بتاعك لما تجيبه
 });
 // مفتاح Google (المجاني/الرخيص)
-const genAI = new GoogleGenerativeAI("process.env.GOOGLE_API_KEY");
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 const googleModel = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });// 🧠 3. دالة توحيد الاسم (هنستخدم فيها OpenAI عشان نحلل فلوسك)
 async function getStandardName(userInput) {
   try {
@@ -108,5 +109,8 @@ app.post('/generate-study', async (req, res) => {
 app.get('/all-studies', (req, res) => {
     db.all("SELECT * FROM studies ORDER BY id DESC", [], (err, rows) => res.json({ studies: rows }));
 });
-
-app.listen(3000, () => console.log('🚀 السيرفر الهجين يعمل (OpenAI للمخ + Google للعضلات)'));
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log('🚀 السيرفر الهجين يعمل (OpenAI للمخ + Google للعضلات)'));
