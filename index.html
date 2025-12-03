@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -8,33 +8,95 @@
 
     <title>نظام دراسات السوق</title>
 
-    <!-- خط عربي مناسب -->
+    <!-- مكتبة تحويل الـ HTML إلى PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <!-- خط عربى مناسب -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap"
           rel="stylesheet">
 
     <style>
-        * { box-sizing: border-box; }
+        /* --- الأساسيات --- */
+        * {
+            box-sizing: border-box;
+        }
 
         body {
             font-family: 'Cairo', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             background-color: #f4f7f6;
             margin: 0;
-            padding: 10px;
+            padding: 8px;
         }
 
         .container {
-            max-width: 1100px;
+            max-width: 1200px;
             width: 100%;
             margin: 0 auto;
             background: white;
-            padding: 20px;
-            border-radius: 12px;
+            padding: 10px 8px;         /* تقليل الهوامش يمين وشمال */
+            border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            position: relative;
         }
 
         @media (max-width: 600px) {
-            .container { padding: 10px; box-shadow: none; }
+            body {
+                padding: 4px;
+            }
+            .container {
+                max-width: 100%;
+                width: 100%;
+                margin: 0;
+                padding: 5px 4px !important;   /* موبايل: ملاصق تقريبًا لحواف الشاشة */
+                border-radius: 6px;
+                box-shadow: none;
+            }
             h1 { font-size: 20px; }
+            .subtitle { font-size: 12px; }
+
+            .input-group {
+                flex-direction: column;
+                padding: 15px;
+                gap: 10px;
+            }
+            button {
+                width: 100%;
+                font-size: 16px;
+                padding: 12px;
+            }
+
+            .report-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            .header-left {
+                border-right: none;
+                border-bottom: 2px solid #c0392b;
+                padding-bottom: 10px;
+                padding-right: 0;
+                width: 100%;
+            }
+            .header-right { width: 100%; }
+
+            .studies-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 10px;
+            }
+        }
+
+        /* --- الهيدر والعناوين --- */
+        .user-badge {
+            text-align: center;
+            background-color: #e8eaf6;
+            color: #1a237e;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            width: fit-content;
+            margin: 0 auto 15px auto;
+            border: 1px solid #c5cae9;
         }
 
         h1 {
@@ -45,38 +107,21 @@
 
         .subtitle {
             text-align: center;
-            color: #555;
-            margin-bottom: 25px;
+            color: #666;
+            margin-bottom: 20px;
         }
 
-        .user-badge {
-            text-align: center;
-            background-color: #e8eaf6;
-            color: #1a237e;
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-size: 13px;
-            font-weight: 600;
-            width: fit-content;
-            margin: 0 auto 20px auto;
-            border: 1px solid #c5cae9;
-        }
-
-        /* البحث */
-        .search-area { margin-bottom: 15px; }
+        /* --- حقول الإدخال --- */
+        .search-area { margin-bottom: 10px; }
 
         .input-group {
             display: flex;
             gap: 10px;
-            background: #f8f9fa;
+            margin-bottom: 15px;
             padding: 20px;
+            background: #f8f9fa;
             border-radius: 8px;
             border: 1px solid #eee;
-        }
-
-        @media(max-width:600px) {
-            .input-group { flex-direction: column; }
-            button { width: 100%; }
         }
 
         input {
@@ -85,79 +130,105 @@
             border: 1px solid #ddd;
             border-radius: 6px;
             font-size: 16px;
+            outline: none;
+        }
+        input:focus {
+            border-color: #1a237e;
         }
 
         button {
-            padding: 12px 25px;
-            background: #1a237e;
+            padding: 12px 30px;
+            background-color: #1a237e;
             color: white;
             border: none;
             border-radius: 6px;
-            font-weight: bold;
             cursor: pointer;
+            font-weight: bold;
             font-size: 15px;
+            transition: 0.3s;
         }
 
-        button:hover { background: #0d47a1; }
+        button:hover {
+            background-color: #0d47a1;
+        }
 
-        /* الأرشيف */
+        /* --- الأرشيف --- */
         .archive-title {
-            margin-top: 20px;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 10px;
             font-size: 18px;
             color: #444;
+            margin: 10px 0;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .studies-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 15px;
-            margin-top: 15px;
         }
 
         .study-card {
-            padding: 15px;
-            background: #fff;
-            border: 1px solid #ddd;
+            background: white;
+            border: 1px solid #e0e0e0;
+            padding: 12px;
             border-radius: 8px;
-            text-align: center;
             cursor: pointer;
+            transition: 0.2s;
+            text-align: center;
             font-weight: 600;
             color: #555;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            font-size: 14px;
         }
 
         .study-card:hover {
-            background: #e3f2fd;
+            background-color: #e3f2fd;
             border-color: #2196f3;
+            transform: translateY(-2px);
+            color: #1a237e;
         }
 
-        /* التقرير */
-        #result-container { display:none; margin-top:20px; }
+        .study-card::before {
+            content: "📄";
+            display: block;
+            font-size: 22px;
+            margin-bottom: 3px;
+        }
+
+        /* --- منطقة النتيجة --- */
+        #result-container {
+            display: none;
+            margin-top: 15px;
+        }
 
         .controls {
             display: flex;
-            justify-content: flex-end;
             gap: 10px;
-            margin-bottom: 15px;
+            justify-content: flex-end;
+            margin-bottom: 10px;
             flex-wrap: wrap;
         }
 
         .btn-action {
-            padding: 8px 18px;
-            border-radius: 5px;
+            padding: 8px 20px;
             border: none;
-            font-weight: 600;
-            color: #fff;
+            border-radius: 5px;
             cursor: pointer;
+            font-weight: bold;
             font-size: 14px;
+            color: white;
         }
 
+        /* منطقة الطباعة */
         #print-area {
             background: white;
+            padding: 15px 10px;      /* تقليل الهوامش يمين وشمال */
             border: 1px solid #ccc;
-            padding: 25px;
-            border-radius: 10px;
+            border-radius: 8px;
+            direction: rtl;
         }
 
         .report-header {
@@ -167,7 +238,12 @@
             border-bottom: 3px solid #1a237e;
             padding-bottom: 15px;
             margin-bottom: 25px;
-            gap: 10px;
+            gap: 15px;
+        }
+
+        .header-right h2 {
+            margin: 0;
+            color: #1a237e;
         }
 
         .header-left {
@@ -176,7 +252,9 @@
             padding-right: 12px;
         }
 
-        .header-left span { display:block; }
+        .header-left span {
+            display: block;
+        }
 
         #result h3 {
             color: #1a237e;
@@ -194,7 +272,7 @@
             padding-right: 20px;
         }
 
-        /* الجداول داخل التقرير */
+        /* --- تنسيق الجداول --- */
         #result table {
             width: 100%;
             border-collapse: collapse;
@@ -214,12 +292,51 @@
             color: white;
         }
 
+        /* جدول في الموبايل: Scroll أفقي فقط */
         @media (max-width: 600px) {
             #result table {
                 display: block;
                 overflow-x: auto;
                 white-space: nowrap;
             }
+            #result td, #result th {
+                padding: 5px;
+                font-size: 13px;
+            }
+
+            #print-area {
+                padding: 10px 6px !important;  /* موبايل: النص عريض جدًا */
+            }
+        }
+
+        /* --- وضع الـ PDF --- */
+        .pdf-mode {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+            padding: 15px 10px !important;
+            background: white !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        .pdf-mode #result table {
+            display: table !important;
+            width: 100% !important;
+            overflow: visible !important;
+            white-space: normal !important;
+            table-layout: fixed !important;
+        }
+
+        .pdf-mode #result td,
+        .pdf-mode #result th {
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
+            font-size: 12px !important;
+        }
+
+        .pdf-mode #print-area {
+            border: none !important;
         }
 
         .loading {
@@ -253,7 +370,7 @@
     </div>
 
     <h1>🏛️ مكتبة دراسات السوق</h1>
-    <div class="subtitle">نظام ذكي لإعداد دراسات السوق والجدوى القطاعية</div>
+    <div class="subtitle">نظام ذكي لإعداد دراسات السوق</div>
 
     <!-- منطقة البحث -->
     <div class="search-area">
@@ -268,14 +385,13 @@
     <!-- منطقة عرض التقرير -->
     <div id="result-container">
         <div class="controls">
-            <button onclick="saveWord()" class="btn-action" style="background:#2e7d32;">📄 تحميل Word</button>
             <button onclick="closeReport()" class="btn-action" style="background:#7f8c8d;">❌ إغلاق</button>
         </div>
 
         <div id="print-area">
             <div class="report-header">
                 <div class="header-right">
-                    <h2 style="margin:0; color:#1a237e;">تقرير دراسة سوق</h2>
+                    <h2>تقرير دراسة سوق</h2>
                     <span id="reportDate" style="color:#666; font-size:14px;">التاريخ: --/--/----</span>
                 </div>
                 <div class="header-left">
@@ -288,15 +404,18 @@
             <div id="sourceBadge" class="badge"></div>
             <div id="result"></div>
 
-            <div style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 10px; text-align: center; color: #aaa; font-size: 11px;">
-                تم إنشاء هذا المستند آلياً بواسطة نظام دراسات السوق
+            <div style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 12px; text-align: center; color: #aaa; font-size: 11px;">
+                تم إنشاء هذا المستند آلياً بواسطة نظام الذكاء الاصطناعي لدراسات السوق
             </div>
         </div>
     </div>
 
     <!-- الأرشيف -->
     <div id="archive-section">
-        <div class="archive-title">📂 الدراسات المتاحة</div>
+        <div class="archive-title">
+            <span>📂 الدراسات المتاحة</span>
+            <span style="font-size:12px; background:#eee; padding:2px 8px; border-radius:10px;" id="count-badge">0</span>
+        </div>
         <div id="archiveList" class="studies-grid"></div>
     </div>
 
@@ -305,7 +424,7 @@
 <script>
     let currentActivityName = "Market_Study";
 
-    // جلب الدراسات السابقة من السيرفر
+    // جلب الدراسات السابقة
     async function loadArchive() {
         try {
             const response = await fetch('all-studies');
@@ -313,10 +432,11 @@
             const listDiv = document.getElementById('archiveList');
             listDiv.innerHTML = '';
 
+            document.getElementById('count-badge').innerText = `${data.studies.length}`;
+
             if (data.studies.length === 0) {
                 listDiv.innerHTML =
                     '<p style="color:#777; grid-column:1/-1; text-align:center;">الأرشيف فارغ حالياً.</p>';
-                return;
             }
 
             data.studies.forEach(study => {
@@ -331,7 +451,7 @@
         }
     }
 
-    // فتح دراسة مخزنة
+    // فتح دراسة محفوظة
     function openStoredStudy(name, content) {
         currentActivityName = name;
         document.getElementById('archive-section').style.display = 'none';
@@ -342,7 +462,7 @@
         updateDate();
     }
 
-    // طلب دراسة جديدة من السيرفر
+    // طلب دراسة جديدة
     async function getStudy() {
         const activity = document.getElementById('activityInput').value.trim();
         if (!activity) {
@@ -361,11 +481,10 @@
                 body: JSON.stringify({ activity: activity })
             });
 
-            document.getElementById('loading').style.display = 'none';
-
             if (response.status === 400) {
                 const data = await response.json();
                 alert("❌ " + data.error);
+                document.getElementById('loading').style.display = 'none';
                 document.querySelector('.search-area').style.display = 'block';
                 document.getElementById('archive-section').style.display = 'block';
                 return;
@@ -373,6 +492,7 @@
 
             const data = await response.json();
 
+            document.getElementById('loading').style.display = 'none';
             document.querySelector('.search-area').style.display = 'none';
             document.getElementById('result-container').style.display = 'block';
 
@@ -391,60 +511,22 @@
         }
     }
 
+    // تحديث التاريخ
     function updateDate() {
         const today = new Date();
         document.getElementById('reportDate').innerText =
             "التاريخ: " + today.toLocaleDateString('ar-EG');
     }
 
+    // إغلاق التقرير والعودة للأرشيف
     function closeReport() {
         document.getElementById('result-container').style.display = 'none';
         document.querySelector('.search-area').style.display = 'block';
         document.getElementById('archive-section').style.display = 'block';
         loadArchive();
     }
-
-    // 🔥 دالة تحميل Word
-    function saveWord() {
-        const content = document.getElementById('print-area').innerHTML;
-
-        const styles = `
-        <style>
-            body { font-family: 'Cairo', sans-serif; direction: rtl; }
-            h2, h3 { color: #1a237e; }
-            table { border-collapse: collapse; width: 100%; }
-            th, td { border: 1px solid #777; padding: 6px; text-align: center; }
-            th { background: #2c3e50; color: #fff; }
-        </style>
-        `;
-
-        const html = `
-        <!DOCTYPE html>
-        <html lang="ar" dir="rtl">
-        <head>
-            <meta charset="utf-8">
-            ${styles}
-        </head>
-        <body>
-            ${content}
-        </body>
-        </html>
-        `;
-
-        const blob = new Blob(['\ufeff', html], {
-            type: 'application/msword'
-        });
-
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `دراسة_${currentActivityName}.doc`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-    }
 </script>
 
 </body>
 </html>
+
