@@ -6,21 +6,14 @@
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#1a237e">
 
-    <title>نظام الدراسات الائتمانية</title>
+    <title>نظام دراسات السوق</title>
 
-    <!-- مكتبة تحويل الـ HTML إلى PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
-
-    <!-- خط عربى مناسب للـ PDF -->
+    <!-- خط عربي مناسب -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap"
           rel="stylesheet">
 
     <style>
-        /* --- الأساسيات --- */
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             font-family: 'Cairo', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -37,63 +30,25 @@
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            position: relative;
         }
 
-        @media (min-width: 1200px) {
-            body {
-                padding-top: 20px;
-            }
-            .container {
-                max-width: 1200px;
-            }
-        }
-
-        /* --- تحسينات الموبايل العامة --- */
         @media (max-width: 600px) {
-            body { padding: 5px; }
-            .container {
-                width: 100%;
-                padding: 10px;
-                margin: 0;
-                border-radius: 8px;
-                box-shadow: none;
-            }
+            .container { padding: 10px; box-shadow: none; }
             h1 { font-size: 20px; }
-            .subtitle { font-size: 12px; }
-
-            .input-group {
-                flex-direction: column;
-                padding: 15px;
-                gap: 10px;
-            }
-            button {
-                width: 100%;
-                font-size: 16px;
-                padding: 12px;
-            }
-
-            .report-header {
-                flex-direction: column;
-                text-align: center;
-                gap: 15px;
-            }
-            .header-left {
-                border-right: none;
-                border-bottom: 2px solid #c0392b;
-                padding-bottom: 10px;
-                padding-right: 0;
-                width: 100%;
-            }
-            .header-right { width: 100%; }
-
-            .studies-grid {
-                grid-template-columns: repeat(2, 1fr) !important;
-                gap: 10px;
-            }
         }
 
-        /* --- الهيدر والعناوين --- */
+        h1 {
+            color: #1a237e;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #555;
+            margin-bottom: 25px;
+        }
+
         .user-badge {
             text-align: center;
             background-color: #e8eaf6;
@@ -107,29 +62,21 @@
             border: 1px solid #c5cae9;
         }
 
-        h1 {
-            color: #1a237e;
-            text-align: center;
-            margin: 10px 0;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 30px;
-        }
-
-        /* --- حقول الإدخال --- */
-        .search-area { margin-bottom: 10px; }
+        /* البحث */
+        .search-area { margin-bottom: 15px; }
 
         .input-group {
             display: flex;
             gap: 10px;
-            margin-bottom: 15px;
-            padding: 20px;
             background: #f8f9fa;
+            padding: 20px;
             border-radius: 8px;
             border: 1px solid #eee;
+        }
+
+        @media(max-width:600px) {
+            .input-group { flex-direction: column; }
+            button { width: 100%; }
         }
 
         input {
@@ -138,105 +85,79 @@
             border: 1px solid #ddd;
             border-radius: 6px;
             font-size: 16px;
-            outline: none;
-        }
-        input:focus {
-            border-color: #1a237e;
         }
 
         button {
-            padding: 12px 30px;
-            background-color: #1a237e;
+            padding: 12px 25px;
+            background: #1a237e;
             color: white;
             border: none;
             border-radius: 6px;
-            cursor: pointer;
             font-weight: bold;
+            cursor: pointer;
             font-size: 15px;
-            transition: 0.3s;
         }
 
-        button:hover {
-            background-color: #0d47a1;
-        }
+        button:hover { background: #0d47a1; }
 
-        /* --- الأرشيف --- */
+        /* الأرشيف */
         .archive-title {
-            font-size: 18px;
-            color: #444;
-            margin: 15px 0;
+            margin-top: 20px;
             border-bottom: 2px solid #eee;
             padding-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            font-size: 18px;
+            color: #444;
         }
 
         .studies-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 15px;
+            margin-top: 15px;
         }
 
         .study-card {
-            background: white;
-            border: 1px solid #e0e0e0;
             padding: 15px;
+            background: #fff;
+            border: 1px solid #ddd;
             border-radius: 8px;
-            cursor: pointer;
-            transition: 0.2s;
             text-align: center;
+            cursor: pointer;
             font-weight: 600;
             color: #555;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
-            font-size: 14px;
         }
 
         .study-card:hover {
-            background-color: #e3f2fd;
+            background: #e3f2fd;
             border-color: #2196f3;
-            transform: translateY(-3px);
-            color: #1a237e;
         }
 
-        .study-card::before {
-            content: "📄";
-            display: block;
-            font-size: 24px;
-            margin-bottom: 5px;
-        }
-
-        /* --- منطقة النتيجة --- */
-        #result-container {
-            display: none;
-            margin-top: 20px;
-        }
+        /* التقرير */
+        #result-container { display:none; margin-top:20px; }
 
         .controls {
             display: flex;
-            gap: 10px;
             justify-content: flex-end;
+            gap: 10px;
             margin-bottom: 15px;
             flex-wrap: wrap;
         }
 
         .btn-action {
-            padding: 8px 20px;
-            border: none;
+            padding: 8px 18px;
             border-radius: 5px;
+            border: none;
+            font-weight: 600;
+            color: #fff;
             cursor: pointer;
-            font-weight: bold;
             font-size: 14px;
-            color: white;
         }
 
-        /* منطقة الطباعة */
         #print-area {
             background: white;
-            padding: 25px;
             border: 1px solid #ccc;
-            border-radius: 5px;
-            direction: rtl;
+            padding: 25px;
+            border-radius: 10px;
         }
 
         .report-header {
@@ -244,32 +165,25 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 3px solid #1a237e;
-            padding-bottom: 20px;
-            margin-bottom: 30px;
-            gap: 15px;
-        }
-
-        .header-right h2 {
-            margin: 0;
-            color: #1a237e;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            gap: 10px;
         }
 
         .header-left {
             text-align: left;
             border-right: 4px solid #c0392b;
-            padding-right: 15px;
+            padding-right: 12px;
         }
 
-        .header-left span {
-            display: block;
-        }
+        .header-left span { display:block; }
 
         #result h3 {
             color: #1a237e;
             background: #f1f2f6;
-            padding: 10px;
+            padding: 8px 10px;
             border-radius: 5px;
-            margin-top: 25px;
+            margin-top: 20px;
             border-right: 5px solid #1a237e;
             font-size: 16px;
         }
@@ -280,7 +194,7 @@
             padding-right: 20px;
         }
 
-        /* --- تنسيق الجداول --- */
+        /* الجداول داخل التقرير */
         #result table {
             width: 100%;
             border-collapse: collapse;
@@ -290,8 +204,8 @@
 
         #result th,
         #result td {
-            border: 1px solid #ddd;
-            padding: 8px;
+            border: 1px solid #777;
+            padding: 6px;
             text-align: center;
         }
 
@@ -300,53 +214,12 @@
             color: white;
         }
 
-        /* جدول في الموبايل: Scroll أفقي فقط */
         @media (max-width: 600px) {
             #result table {
                 display: block;
                 overflow-x: auto;
                 white-space: nowrap;
             }
-            #result td, #result th {
-                padding: 5px;
-                font-size: 13px;
-            }
-        }
-
-        /* --- وضع الـ PDF --- */
-        .pdf-mode {
-            width: 100% !important;
-            max-width: 100% !important;
-            margin: 0 !important;
-            padding: 20px !important;
-            background: white !important;
-            border: none !important;
-            box-shadow: none !important;
-        }
-
-        .pdf-mode #result table {
-            display: table !important;
-            width: 100% !important;
-            overflow: visible !important;
-            white-space: normal !important;
-            table-layout: fixed !important;
-        }
-
-        .pdf-mode #result td,
-        .pdf-mode #result th {
-            word-wrap: break-word !important;
-            overflow-wrap: break-word !important;
-            font-size: 12px !important;
-        }
-
-        .pdf-mode #print-area {
-            border: none !important;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        #result h3, #result table {
-            page-break-inside: avoid;
         }
 
         .loading {
@@ -380,7 +253,7 @@
     </div>
 
     <h1>🏛️ مكتبة دراسات السوق</h1>
-    <div class="subtitle">نظام ذكي لإعداد دراسات السوق والجدوى الائتمانية</div>
+    <div class="subtitle">نظام ذكي لإعداد دراسات السوق والجدوى القطاعية</div>
 
     <!-- منطقة البحث -->
     <div class="search-area">
@@ -395,14 +268,14 @@
     <!-- منطقة عرض التقرير -->
     <div id="result-container">
         <div class="controls">
-            <button onclick="savePDF()" class="btn-action" style="background:#c0392b;">🖨️ تحميل PDF</button>
+            <button onclick="saveWord()" class="btn-action" style="background:#2e7d32;">📄 تحميل Word</button>
             <button onclick="closeReport()" class="btn-action" style="background:#7f8c8d;">❌ إغلاق</button>
         </div>
 
         <div id="print-area">
             <div class="report-header">
                 <div class="header-right">
-                    <h2>تقرير دراسة سوق</h2>
+                    <h2 style="margin:0; color:#1a237e;">تقرير دراسة سوق</h2>
                     <span id="reportDate" style="color:#666; font-size:14px;">التاريخ: --/--/----</span>
                 </div>
                 <div class="header-left">
@@ -415,18 +288,15 @@
             <div id="sourceBadge" class="badge"></div>
             <div id="result"></div>
 
-            <div style="margin-top: 50px; border-top: 1px solid #eee; padding-top: 15px; text-align: center; color: #aaa; font-size: 11px;">
-                تم إنشاء هذا المستند آلياً بواسطة نظام الذكاء الاصطناعي
+            <div style="margin-top: 40px; border-top: 1px solid #eee; padding-top: 10px; text-align: center; color: #aaa; font-size: 11px;">
+                تم إنشاء هذا المستند آلياً بواسطة نظام دراسات السوق
             </div>
         </div>
     </div>
 
     <!-- الأرشيف -->
     <div id="archive-section">
-        <div class="archive-title">
-            <span>📂 الدراسات المتاحة</span>
-            <span style="font-size:12px; background:#eee; padding:2px 8px; border-radius:10px;" id="count-badge">0</span>
-        </div>
+        <div class="archive-title">📂 الدراسات المتاحة</div>
         <div id="archiveList" class="studies-grid"></div>
     </div>
 
@@ -443,11 +313,10 @@
             const listDiv = document.getElementById('archiveList');
             listDiv.innerHTML = '';
 
-            document.getElementById('count-badge').innerText = `${data.studies.length}`;
-
             if (data.studies.length === 0) {
                 listDiv.innerHTML =
                     '<p style="color:#777; grid-column:1/-1; text-align:center;">الأرشيف فارغ حالياً.</p>';
+                return;
             }
 
             data.studies.forEach(study => {
@@ -492,10 +361,11 @@
                 body: JSON.stringify({ activity: activity })
             });
 
+            document.getElementById('loading').style.display = 'none';
+
             if (response.status === 400) {
                 const data = await response.json();
                 alert("❌ " + data.error);
-                document.getElementById('loading').style.display = 'none';
                 document.querySelector('.search-area').style.display = 'block';
                 document.getElementById('archive-section').style.display = 'block';
                 return;
@@ -503,7 +373,6 @@
 
             const data = await response.json();
 
-            document.getElementById('loading').style.display = 'none';
             document.querySelector('.search-area').style.display = 'none';
             document.getElementById('result-container').style.display = 'block';
 
@@ -535,51 +404,45 @@
         loadArchive();
     }
 
-    // دالة تحميل PDF (محسنة)
-    async function savePDF() {
-        const element = document.getElementById('print-area');
+    // 🔥 دالة تحميل Word
+    function saveWord() {
+        const content = document.getElementById('print-area').innerHTML;
 
-        // التأكد أن الكونتينر ظاهر
-        document.getElementById("result-container").style.display = "block";
+        const styles = `
+        <style>
+            body { font-family: 'Cairo', sans-serif; direction: rtl; }
+            h2, h3 { color: #1a237e; }
+            table { border-collapse: collapse; width: 100%; }
+            th, td { border: 1px solid #777; padding: 6px; text-align: center; }
+            th { background: #2c3e50; color: #fff; }
+        </style>
+        `;
 
-        // انتظار تحميل الخطوط لتفادي مربعات/طمس الحروف
-        if (document.fonts && document.fonts.ready) {
-            await document.fonts.ready;
-        }
+        const html = `
+        <!DOCTYPE html>
+        <html lang="ar" dir="rtl">
+        <head>
+            <meta charset="utf-8">
+            ${styles}
+        </head>
+        <body>
+            ${content}
+        </body>
+        </html>
+        `;
 
-        // الانتظار قليلاً لضمان اكتمال الرسم
-        await new Promise(r => setTimeout(r, 200));
+        const blob = new Blob(['\ufeff', html], {
+            type: 'application/msword'
+        });
 
-        // تفعيل وضع الـ PDF
-        element.classList.add('pdf-mode');
-
-        const safeName = (currentActivityName || 'study').replace(/[\\/:*?"<>|]+/g, '-');
-
-        const opt = {
-            margin:       [10, 10, 10, 10],
-            filename:     `دراسة_${safeName}.pdf`,
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  {
-                scale: 2,
-                useCORS: true,
-                scrollY: 0,
-                scrollX: 0,
-                windowWidth: document.documentElement.clientWidth,
-                letterRendering: true
-            },
-            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-            pagebreak:    { mode: ['css', 'legacy'] }
-        };
-
-        try {
-            await html2pdf().set(opt).from(element).save();
-        } catch (err) {
-            console.error("PDF generation failed:", err);
-            alert("حدث خطأ أثناء توليد ملف الـ PDF.");
-        } finally {
-            // رجوع للوضع العادي
-            element.classList.remove('pdf-mode');
-        }
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `دراسة_${currentActivityName}.doc`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
     }
 </script>
 
